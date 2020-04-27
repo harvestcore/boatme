@@ -10,9 +10,8 @@
         android:name="com.agm.boatme.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home">
-
         <action
-            android:id="@+id/action_HomeFragment_to_HomeSecondFragment"
+            android:id="@+id/action_nav_home_to_nav_home_second"
             app:destination="@id/nav_home_second" />
     </fragment>
     <fragment
@@ -20,20 +19,20 @@
         android:name="com.agm.boatme.ui.home.HomeSecondFragment"
         android:label="@string/home_second"
         tools:layout="@layout/fragment_home_second">
-        <action
-            android:id="@+id/action_HomeSecondFragment_to_HomeFragment"
-            app:destination="@id/nav_home" />
 
         <argument
             android:name="myArg"
             app:argType="string" />
+        <action
+            android:id="@+id/action_nav_home_second_to_nav_home"
+            app:destination="@id/nav_home" />
     </fragment>
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.agm.boatme.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_route"
+        android:name="com.agm.boatme.ui.route.RouteFragment"
+        android:label="@string/menu_route"
+        tools:layout="@layout/fragment_route" />
 
     <fragment
         android:id="@+id/nav_slideshow"
