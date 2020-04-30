@@ -53,6 +53,15 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.Holder> {
         } else {
             holder.image.setImageResource(R.drawable.coordinate);
         }
+
+        if (holder.pointLayout != null) {
+            holder.pointLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }
     }
 
     @Override
@@ -74,7 +83,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.Holder> {
             lat = itemView.findViewById(R.id.route_lat);
             lng = itemView.findViewById(R.id.route_lng);
             image = itemView.findViewById(R.id.route_icon);
-            pointLayout = itemView.findViewById(R.id.pointFragment);
+            pointLayout = itemView.findViewById(R.id.pointItem);
             this.onPointListener = onPointListener;
             itemView.setOnClickListener(this);
         }

@@ -11,32 +11,31 @@
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_nav_home_to_nav_home_second"
-            app:destination="@id/nav_home_second" />
-    </fragment>
-    <fragment
-        android:id="@+id/nav_home_second"
-        android:name="com.agm.boatme.ui.home.HomeSecondFragment"
-        android:label="@string/home_second"
-        tools:layout="@layout/fragment_home_second">
-
-        <argument
-            android:name="myArg"
-            app:argType="string" />
+            android:id="@+id/action_nav_home_to_nav_route"
+            app:destination="@id/nav_route" />
         <action
-            android:id="@+id/action_nav_home_second_to_nav_home"
-            app:destination="@id/nav_home" />
+            android:id="@+id/action_nav_home_to_nav_settings"
+            app:destination="@id/nav_settings" />
     </fragment>
 
     <fragment
         android:id="@+id/nav_route"
         android:name="com.agm.boatme.ui.route.RouteFragment"
         android:label="@string/menu_route"
-        tools:layout="@layout/fragment_route" />
+        tools:layout="@layout/fragment_route" >
+        <action
+            android:id="@+id/list_to_point"
+            app:destination="@id/pointFragment2" />
+    </fragment>
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.agm.boatme.ui.slideshow.SlideshowFragment"
+        android:id="@+id/nav_settings"
+        android:name="com.agm.boatme.ui.settings.SettingsFragment"
         android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/pointFragment2"
+        android:name="com.agm.boatme.ui.route.PointFragment"
+        android:label="fragment_point"
+        tools:layout="@layout/fragment_point" />
 </navigation>

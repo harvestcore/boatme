@@ -23,7 +23,7 @@ public class PointFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        @SuppressLint("ResourceType") View root = inflater.inflate(R.id.pointFragment, container, false);
+        @SuppressLint("ResourceType") View root = inflater.inflate(R.id.pointItem, container, false);
 
         text = root.findViewById(R.id.pointText);
 

@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.agm.boatme.ui.route.RouteFragment;
 import com.agm.boatme.ui.home.HomeFragment;
-import com.agm.boatme.ui.slideshow.SlideshowFragment;
+import com.agm.boatme.ui.settings.SettingsFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.mapbox.geojson.Feature;
@@ -98,15 +98,8 @@ public class MainActivity extends VoiceActivity implements NavigationView.OnNavi
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-
-//                clickMicButton();
-
-            //Ask the user to speak
             try {
-                System.err.println("TALKING1");
-                speak("What can I do for you?", "EN", ID_PROMPT_QUERY);
+                speak("Hola caracola", ID_PROMPT_QUERY);
             } catch (Exception e) {
                 System.err.println(e.toString());
             }
@@ -120,7 +113,7 @@ public class MainActivity extends VoiceActivity implements NavigationView.OnNavi
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_route, R.id.nav_slideshow)
+                R.id.nav_home, R.id.nav_route, R.id.nav_settings)
                 .setDrawerLayout(drawer)
                 .build();
 
@@ -232,8 +225,8 @@ public class MainActivity extends VoiceActivity implements NavigationView.OnNavi
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_home, new HomeFragment()).commit();
                 break;
-            case R.id.nav_slideshow:
-                getSupportFragmentManager().beginTransaction().replace(R.id.nav_slideshow, new SlideshowFragment()).commit();
+            case R.id.nav_settings:
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_settings, new SettingsFragment()).commit();
                 break;
         }
 
@@ -256,10 +249,16 @@ public class MainActivity extends VoiceActivity implements NavigationView.OnNavi
     public void processAsrResults(ArrayList<String> nBestList, float[] nBestConfidences) {
         if(nBestList!=null){
             if(nBestList.size()>0){
-                String bestResult = nBestList.get(0); //We will use the best result
+                String bestResult = nBestList.get(0);
                 try {
-                    System.out.println("REPEAT --------------> " + bestResult);
-                    speak(bestResult, "EN", ID_PROMPT_INFO);
+                    RecognitionResponse answer = RecognitionManager.getInstance().getAnswer(bestResult);
+                    if (answer.success) {
+                        speak(answer.response, ID_PROMPT_INFO);
+
+                        if (answer.continueTalking) {
+                            startListening();
+                        }
+                    }
                 } catch (Exception e) {
                     System.err.println(e.toString());
                 }
