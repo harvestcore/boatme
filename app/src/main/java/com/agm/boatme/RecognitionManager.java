@@ -1,5 +1,8 @@
 package com.agm.boatme;
 
+
+import com.agm.boatme.data.MessageManager;
+
 public class RecognitionManager {
     private static RecognitionManager recognitionManager;
     private String lastRecognizedMsg = "-";
@@ -27,31 +30,40 @@ public class RecognitionManager {
         System.out.println(s);
     }
 
-    public RecognitionResponse getAnswer(String result) {
-        if (lastRecognizedMsg != result) {
-            print("RECOGNIZING: " + result); // Testing purposes
-
-            if (result.contains("nueva") && result.contains("ruta")) {
+    private RecognitionResponse getResponse(String operation, String result, String placeholder) {
+        switch (operation) {
+            case "greeting":
+            case "create-route":
                 return new RecognitionResponse(
                         true,
-                        "Muy bien, ¿a donde vamos hoy?",
-                        enableTalkback && true
+                        MessageManager.getInstance().getByName(operation).random(),
+                        true
                 );
-            } else if (result.contains("puerto")) {
-                int index = result.indexOf("puerto");
+
+            case "remove-route":
+            case "error":
+                return new RecognitionResponse(
+                    true,
+                    MessageManager.getInstance().getByName(operation).random(),
+                    false
+                );
+
+            case "waypoint":
+            case "error-message":
+            case "not-found":
                 return new RecognitionResponse(
                         true,
-                        "Genial, nos vamos al " + result.substring(index) + ". ¿Desde dónde salimos?",
-                        enableTalkback && true
+                        MessageManager.getInstance().getByName(operation).random().replaceAll("placeholder", placeholder),
+                        false
                 );
-            }
 
-            lastRecognizedMsg = result;
-            return new RecognitionResponse(
-                    false,
-                    "Lo siento, no te entendí. Dijiste: " + result,
-                    enableTalkback && false
-            );
+            case "to-port":
+            case "from-port":
+                return new RecognitionResponse(
+                        true,
+                        MessageManager.getInstance().getByName(operation).random().replaceAll("placeholder", placeholder),
+                        true
+                );
         }
 
         return new RecognitionResponse(
@@ -59,5 +71,36 @@ public class RecognitionManager {
                 "",
                 false
         );
+    }
+
+    public RecognitionResponse getAnswer(String result) {
+        if (lastRecognizedMsg != result) {
+            print("RECOGNIZING: " + result); // Testing purposes
+
+            if (result.contains("hola")) {
+                return this.getResponse("greeting", result, "");
+            } else if (result.contains("nueva") && result.contains("ruta")) {
+                return this.getResponse("create-route", result, "");
+            } else if (result.contains("desde") && result.contains("puerto")) {
+                int index = result.indexOf("puerto");
+                String placeholder = result.substring(index);
+                return this.getResponse("from-port", result, placeholder);
+            } else if ((result.contains(" al ") || result.contains(" hacia ")) && result.contains("puerto")) {
+                int index = result.indexOf("puerto");
+                String placeholder = result.substring(index);
+                return this.getResponse("to-port", result, placeholder);
+            } else if ((result.contains(" borrar ") || result.contains(" cancelar ") || result.contains(" eliminar ")) && result.contains("ruta")) {
+                return this.getResponse("remove-route", result, "");
+            } else if (result.contains(" ir a ") || result.contains(" nuevo punto ")) {
+                int index = result.indexOf(" ir a ");
+                String placeholder = result.substring(index + 6);
+                return this.getResponse("waypoint", result, placeholder);
+            }
+
+            lastRecognizedMsg = result;
+            return this.getResponse("error-message", result, result);
+        }
+
+        return this.getResponse("", "", "");
     }
 }
