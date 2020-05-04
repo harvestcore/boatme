@@ -51,7 +51,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        addPointDialogButton = root.findViewById(R.id.addPointDialog);
+        addPointDialogButton = root.findViewById(R.id.addPointButton);
         addPointDialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

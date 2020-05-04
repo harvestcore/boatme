@@ -2,6 +2,7 @@ package com.agm.boatme.ui.settings;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+import com.agm.boatme.MapManager;
 import com.agm.boatme.R;
 
 public class AddPointDialog extends AppCompatDialogFragment {
@@ -20,7 +22,6 @@ public class AddPointDialog extends AppCompatDialogFragment {
     EditText addPointLatitude;
     EditText addPointLongitude;
     Switch addPointIsPort;
-
 
     @NonNull
     @Override
@@ -37,7 +38,12 @@ public class AddPointDialog extends AppCompatDialogFragment {
         .setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                String name = addPointName.getText().toString();
+                float latitude = Float.parseFloat(addPointLatitude.getText().toString());
+                float longitude = Float.parseFloat(addPointLongitude.getText().toString());
+                boolean isPort = addPointIsPort.isSelected();
 
+                MapManager.getInstance().addToRoute(latitude, longitude, name, isPort);
             }
         });
 
