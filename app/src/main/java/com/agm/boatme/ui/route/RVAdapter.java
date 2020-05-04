@@ -6,12 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.agm.boatme.InterestPoint;
+import com.agm.boatme.MapManager;
 import com.agm.boatme.R;
 
 import java.util.ArrayList;
@@ -42,11 +44,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.Holder> {
         InterestPoint point = data.get(position);
         holder.text.setText(point.getName());
         String lat = String.valueOf(point.getLat());
-        String lng = String.valueOf(point.getLng()).substring(0,8);
-        lat = lat.length() > 8 ? lat.substring(0, 8) : lat;
-        lng = lng.length() > 8 ? lng.substring(0, 8) : lng;
-        holder.lat.setText("Lat:" + lat);
-        holder.lng.setText("Lng:" + lng);
+        String lng = String.valueOf(point.getLng());
+        holder.lat.setText("Lat: " + lat);
+        holder.lng.setText("Lng: " + lng);
 
         if (point.isPort()) {
             holder.image.setImageResource(R.drawable.port);
@@ -54,14 +54,12 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.Holder> {
             holder.image.setImageResource(R.drawable.coordinate);
         }
 
-        if (holder.pointLayout != null) {
-            holder.pointLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-        }
+        holder.pointButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MapManager.getInstance().selectFromList(position);
+            }
+        });
     }
 
     @Override
@@ -77,6 +75,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.Holder> {
         ImageView image;
         OnPointListener onPointListener;
 
+        ImageView pointButton;
+        ImageView deleteButton;
+
         public Holder(@NonNull View itemView, OnPointListener onPointListener) {
             super(itemView);
             text = itemView.findViewById(R.id.route_txt);
@@ -84,8 +85,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.Holder> {
             lng = itemView.findViewById(R.id.route_lng);
             image = itemView.findViewById(R.id.route_icon);
             pointLayout = itemView.findViewById(R.id.pointItem);
+
+            pointButton = itemView.findViewById(R.id.pointButton);
+            deleteButton = itemView.findViewById(R.id.deleteButton);
             this.onPointListener = onPointListener;
-            itemView.setOnClickListener(this);
+            deleteButton.setOnClickListener(this);
         }
 
         @Override

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@id/nav_home">
 
     <fragment
         android:id="@+id/nav_home"
@@ -16,17 +16,16 @@
         <action
             android:id="@+id/action_nav_home_to_nav_settings"
             app:destination="@id/nav_settings" />
+        <action
+            android:id="@+id/action_nav_home_to_pointFragment"
+            app:destination="@id/pointFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/nav_route"
         android:name="com.agm.boatme.ui.route.RouteFragment"
         android:label="@string/menu_route"
-        tools:layout="@layout/fragment_route" >
-        <action
-            android:id="@+id/list_to_point"
-            app:destination="@id/pointFragment2" />
-    </fragment>
+        tools:layout="@layout/fragment_route" />
 
     <fragment
         android:id="@+id/nav_settings"
@@ -34,8 +33,8 @@
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_settings" />
     <fragment
-        android:id="@+id/pointFragment2"
+        android:id="@+id/pointFragment"
         android:name="com.agm.boatme.ui.route.PointFragment"
-        android:label="fragment_point"
-        tools:layout="@layout/fragment_point" />
+        android:label="PointFragment"
+        tools:layout="@layout/fragment_point"/>
 </navigation>
