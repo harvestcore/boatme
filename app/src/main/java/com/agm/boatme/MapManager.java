@@ -1,9 +1,13 @@
 package com.agm.boatme;
 
+import android.graphics.Color;
+
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.style.layers.LineLayer;
+import com.mapbox.mapboxsdk.style.layers.Property;
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
@@ -21,7 +25,6 @@ public class MapManager {
 
     ArrayList<InterestPoint> route;
     InterestPoint currentSelectedFromList;
-    InterestPoint currentPosition;
     GeoJsonSource currentSource;
     SymbolLayer currentLayer;
     Style map;
@@ -29,14 +32,6 @@ public class MapManager {
 
     private MapManager() {
         route = new ArrayList<>();
-        this.addToRoute(23.4582348f, 37.5062675f, "t1", false);
-        this.addToRoute(23.4577141f, 37.5066109f, "t2", true);
-        this.addToRoute(23.4572601f, 37.5070038f, "t3", false);
-        this.addToRoute(23.4566746f, 37.507301f, "t4", false);
-        this.addToRoute(23.455698f, 37.5076256f, "t5", true);
-        this.addToRoute(23.4549737f, 37.5079214f, "t6", true);
-        this.addToRoute(23.4545445f, 37.5080235f, "t7", false);
-        this.addToRoute(23.4538579f, 37.5078873f, "t8", false);
     }
 
     public static MapManager getInstance() {
@@ -63,6 +58,14 @@ public class MapManager {
         }
     }
 
+    public void setRoute(ArrayList<InterestPoint> route) {
+        this.route = route;
+    }
+
+    public void emptyRoute() {
+        this.route.clear();
+    }
+
     public void setMap(Style map) {
         this.map = map;
     }
@@ -74,6 +77,18 @@ public class MapManager {
                 aux.add(Feature.fromGeometry(Point.fromLngLat(r.getLng(), r.getLat())));
             }
         }
+        return aux;
+    }
+
+    private float[][] getGeoLine() {
+        float [][] aux = new float[this.route.size()][];
+
+        if (this.route.size() > 0) {
+            for (int i = 0; i < this.route.size(); ++i) {
+                aux[i] = this.route.get(i).getPosition();
+            }
+        }
+
         return aux;
     }
 
@@ -108,7 +123,7 @@ public class MapManager {
     }
 
     public void plotPoints() {
-
+        // POINT LAYER
         ArrayList<Feature> points = this.transferPoints();
         this.currentSource = new GeoJsonSource(MARKER_SOURCE, FeatureCollection.fromFeatures(points));
         this.map.addSource(this.currentSource);
@@ -121,6 +136,14 @@ public class MapManager {
                         PropertyFactory.iconOffset(new Float[] {0f, 0f})
                 );
         this.map.addLayer(this.currentLayer);
+
+        // LINE LAYER
+        this.map.addLayer(new LineLayer("linelayer", "line-source")
+                .withProperties(PropertyFactory.lineCap(Property.LINE_CAP_ROUND),
+                        PropertyFactory.lineJoin(Property.LINE_JOIN_MITER),
+                        PropertyFactory.lineOpacity(.7f),
+                        PropertyFactory.lineWidth(7f),
+                        PropertyFactory.lineColor(Color.parseColor("#ff0000"))));
     }
 
     public void removeFromRoute(int position) {

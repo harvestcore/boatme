@@ -1,24 +1,28 @@
 package com.agm.boatme;
 
 public class InterestPoint {
-    float lat;
-    float lng;
+    float position[];
     String name;
     boolean isPort;
 
     public InterestPoint(float lat, float lng, String name, boolean isPort) {
-        this.lat = lat;
-        this.lng = lng;
+        this.position = new float[2];
+        this.position[0] = lat;
+        this.position[1] = lng;
         this.name = name;
         this.isPort = isPort;
     }
 
     public float getLat() {
-        return lat;
+        return this.position[0];
     }
 
     public float getLng() {
-        return lng;
+        return this.position[1] ;
+    }
+
+    public float[] getPosition() {
+        return this.position;
     }
 
     public String getName() {

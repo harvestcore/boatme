@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.agm.boatme.MapManager;
+import com.agm.boatme.MarinePoints;
 import com.agm.boatme.R;
 import com.agm.boatme.RecognitionManager;
 
@@ -21,6 +22,7 @@ public class SettingsFragment extends Fragment {
 
     Switch talkbackSwitch;
     Button addPointDialogButton;
+    Button setDefaultPointsButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -57,6 +59,14 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 AddPointDialog addPointDialog = new AddPointDialog();
                 addPointDialog.show(getActivity().getSupportFragmentManager(), "Add new point");
+            }
+        });
+
+        setDefaultPointsButton = root.findViewById(R.id.setDefaultPointsButton);
+        setDefaultPointsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MapManager.getInstance().setRoute(MarinePoints.getInstance().getPoints());
             }
         });
 
