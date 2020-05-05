@@ -62,7 +62,7 @@ public class MapManager {
         this.route = route;
     }
 
-    public void emptyRoute() {
+    public void clearRoute() {
         this.route.clear();
     }
 

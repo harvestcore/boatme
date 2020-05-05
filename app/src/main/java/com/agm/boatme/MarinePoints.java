@@ -45,7 +45,7 @@ public class MarinePoints {
 
     public InterestPoint getByName(String name) {
         for (InterestPoint p: points) {
-            if (p.name.toLowerCase() == name.toLowerCase()) {
+            if (p.name.toLowerCase().equals(name.toLowerCase())) {
                 return p;
             }
         }

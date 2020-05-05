@@ -28,4 +28,16 @@
         <item>Traffic</item>
         <item>Traffic night</item>
     </string-array>
+
+
+    <string-array name="ports">
+        <item>Adra</item>
+        <item>Roquetas</item>
+        <item>Almeria</item>
+        <item>Malaga</item>
+        <item>Benalmadena</item>
+        <item>Caleta de Velez</item>
+        <item>Motril</item>
+        <item>Marbella</item>
+    </string-array>
 </resources>

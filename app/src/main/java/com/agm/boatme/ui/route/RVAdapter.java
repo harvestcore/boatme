@@ -53,13 +53,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.Holder> {
         } else {
             holder.image.setImageResource(R.drawable.coordinate);
         }
-
-        holder.pointButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MapManager.getInstance().selectFromList(position);
-            }
-        });
     }
 
     @Override
@@ -75,7 +68,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.Holder> {
         ImageView image;
         OnPointListener onPointListener;
 
-        ImageView pointButton;
         ImageView deleteButton;
 
         public Holder(@NonNull View itemView, OnPointListener onPointListener) {
@@ -86,7 +78,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.Holder> {
             image = itemView.findViewById(R.id.route_icon);
             pointLayout = itemView.findViewById(R.id.pointItem);
 
-            pointButton = itemView.findViewById(R.id.pointButton);
             deleteButton = itemView.findViewById(R.id.deleteButton);
             this.onPointListener = onPointListener;
             deleteButton.setOnClickListener(this);

@@ -23,6 +23,8 @@ public class SettingsFragment extends Fragment {
     Switch talkbackSwitch;
     Button addPointDialogButton;
     Button setDefaultPointsButton;
+    Button createRouteButton;
+    Button removeRouteButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -67,6 +69,23 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 MapManager.getInstance().setRoute(MarinePoints.getInstance().getPoints());
+            }
+        });
+
+        createRouteButton = root.findViewById(R.id.createRouteButton);
+        createRouteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CreateRouteDialog createRouteDialog = new CreateRouteDialog();
+                createRouteDialog.show(getActivity().getSupportFragmentManager(), "Create new route");
+            }
+        });
+
+        removeRouteButton = root.findViewById(R.id.removeRouteButton);
+        removeRouteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MapManager.getInstance().clearRoute();
             }
         });
 
