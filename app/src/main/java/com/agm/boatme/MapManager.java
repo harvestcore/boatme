@@ -4,6 +4,7 @@ import android.graphics.Color;
 
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
+import com.mapbox.geojson.LineString;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.style.layers.LineLayer;
@@ -32,6 +33,7 @@ public class MapManager {
 
     private MapManager() {
         route = new ArrayList<>();
+        route.add(new InterestPoint(0,0, "The route is empty!", true));
     }
 
     public static MapManager getInstance() {
@@ -80,13 +82,11 @@ public class MapManager {
         return aux;
     }
 
-    private float[][] getGeoLine() {
-        float [][] aux = new float[this.route.size()][];
+    private ArrayList<Point> getGeoLine() {
+        ArrayList<Point> aux = new ArrayList<>();
 
-        if (this.route.size() > 0) {
-            for (int i = 0; i < this.route.size(); ++i) {
-                aux[i] = this.route.get(i).getPosition();
-            }
+        for (InterestPoint p: route) {
+            aux.add(Point.fromLngLat(p.getLng(), p.getLat()));
         }
 
         return aux;
@@ -137,12 +137,19 @@ public class MapManager {
                 );
         this.map.addLayer(this.currentLayer);
 
+
         // LINE LAYER
+        this.map.addSource(new GeoJsonSource("line-source",
+                FeatureCollection.fromFeatures(new Feature[] {Feature.fromGeometry(
+                        LineString.fromLngLats(this.getGeoLine())
+                )})));
+
         this.map.addLayer(new LineLayer("linelayer", "line-source")
-                .withProperties(PropertyFactory.lineCap(Property.LINE_CAP_ROUND),
+                .withProperties(
+                        PropertyFactory.lineCap(Property.LINE_CAP_ROUND),
                         PropertyFactory.lineJoin(Property.LINE_JOIN_MITER),
                         PropertyFactory.lineOpacity(.7f),
-                        PropertyFactory.lineWidth(7f),
+                        PropertyFactory.lineWidth(3f),
                         PropertyFactory.lineColor(Color.parseColor("#ff0000"))));
     }
 
@@ -152,10 +159,6 @@ public class MapManager {
 
     public ArrayList<InterestPoint> getRoute() {
         return route;
-    }
-
-    public void selectFromList(int position) {
-        currentSelectedFromList = route.get(position);
     }
 
     public void deselectCurrentFromList() {
