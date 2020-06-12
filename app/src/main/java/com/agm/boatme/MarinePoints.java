@@ -1,5 +1,10 @@
 package com.agm.boatme;
 
+import android.content.res.XmlResourceParser;
+
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MarinePoints {
@@ -8,26 +13,6 @@ public class MarinePoints {
 
     private MarinePoints(){
         points = new ArrayList<>();
-
-        points.add(new InterestPoint(36.7443f, -3.0193f, "Adra", true));
-        points.add(new InterestPoint(36.7564f, -2.6054f, "Roquetas", true));
-        points.add(new InterestPoint(36.8290f, -2.4738f, "Almeria", true));
-        points.add(new InterestPoint(36.7072f, -4.4190f, "Malaga", true));
-        points.add(new InterestPoint(36.5955f, -4.5128f, "Benalmadena", true));
-        points.add(new InterestPoint(36.7472f, -4.0720f, "Caleta de Velez", true));
-        points.add(new InterestPoint(36.7202f, -3.5210f, "Motril", true));
-        points.add(new InterestPoint(36.4859f, -4.9522f, "Marbella", true));
-
-        points.add(new InterestPoint(36.8173f, -2.4556f, "Point-0", false));
-        points.add(new InterestPoint(36.7075f, -2.5784f, "Point-1", false));
-        points.add(new InterestPoint(36.6249f, -2.7068f, "Point-2", false));
-        points.add(new InterestPoint(36.6756f, -3.0260f, "Point-3", false));
-        points.add(new InterestPoint(36.6442f, -3.3213f, "Point-4", false));
-        points.add(new InterestPoint(36.6150f, -3.6681f, "Point-5", false));
-        points.add(new InterestPoint(36.6640f, -4.1267f, "Point-6", false));
-        points.add(new InterestPoint(36.5869f, -4.3588f, "Point-7", false));
-        points.add(new InterestPoint(36.4831f, -4.5058f, "Point-8", false));
-        points.add(new InterestPoint(36.4169f, -4.8230f, "Point-9", false));
     }
 
     public static MarinePoints getInstance() {
@@ -36,6 +21,37 @@ public class MarinePoints {
         }
 
         return marinePoints;
+    }
+
+    public void parseData(XmlResourceParser parser) {
+        int eventType = -1;
+        while (eventType != XmlResourceParser.END_DOCUMENT) {
+            if (eventType == XmlResourceParser.START_TAG) {
+                String pointValue = parser.getName();
+                if (pointValue.equals("point")) {
+                    String lat = parser.getAttributeValue(null, "lat");
+                    String lng = parser.getAttributeValue(null, "lng");
+                    String name = parser.getAttributeValue(null, "name");
+                    String isPort = parser.getAttributeValue(null, "isPort");
+
+                    this.points.add(new InterestPoint(
+                            Float.parseFloat(lat),
+                            Float.parseFloat(lng),
+                            name,
+                            isPort.equals("true")
+                    ));
+                }
+            }
+
+            try {
+                eventType = parser.next();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (XmlPullParserException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println(this.points.size());
     }
 
     public ArrayList<InterestPoint> getPoints() {
