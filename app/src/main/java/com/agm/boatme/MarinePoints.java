@@ -51,7 +51,6 @@ public class MarinePoints {
                 e.printStackTrace();
             }
         }
-        System.out.println(this.points.size());
     }
 
     public ArrayList<InterestPoint> getPoints() {
