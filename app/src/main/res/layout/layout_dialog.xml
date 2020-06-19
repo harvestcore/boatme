@@ -11,7 +11,7 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="Longitude"
-        android:inputType="numberDecimal"
+        android:inputType="number|numberDecimal|phone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addPoint_latitude" />
@@ -23,7 +23,7 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="Latitude"
-        android:inputType="numberDecimal"
+        android:inputType="number|numberDecimal|phone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addPoint_name" />
@@ -45,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Port?   "
+        android:text="Is it a port?"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addPoint_longitude" />

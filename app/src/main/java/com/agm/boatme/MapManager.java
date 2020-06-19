@@ -24,6 +24,7 @@ public class MapManager {
 
     private static MapManager mapManager;
 
+    boolean routeActive = false;
     ArrayList<InterestPoint> route;
     InterestPoint currentSelectedFromList;
     GeoJsonSource currentSource;
@@ -49,6 +50,10 @@ public class MapManager {
     }
 
     public void addToRoute(float lat, float lng, String name, boolean isPort) {
+        if (route.size() == 1 && route.get(0).name.contains("The route is empty!")) {
+            route.clear();
+        }
+
         route.add(new InterestPoint(lat, lng, name, isPort));
     }
 
@@ -60,12 +65,17 @@ public class MapManager {
         }
     }
 
+    public void setRouteActive(boolean routeActive) {
+        this.routeActive = routeActive;
+    }
+
     public void setRoute(ArrayList<InterestPoint> route) {
         this.route = route;
     }
 
     public void clearRoute() {
         this.route.clear();
+        this.routeActive = false;
     }
 
     public void setMap(Style map) {
@@ -138,19 +148,21 @@ public class MapManager {
         this.map.addLayer(this.currentLayer);
 
 
-        // LINE LAYER
-        this.map.addSource(new GeoJsonSource("line-source",
-                FeatureCollection.fromFeatures(new Feature[] {Feature.fromGeometry(
-                        LineString.fromLngLats(this.getGeoLine())
-                )})));
+        if (this.routeActive) {
+            // LINE LAYER
+            this.map.addSource(new GeoJsonSource("line-source",
+                    FeatureCollection.fromFeatures(new Feature[] {Feature.fromGeometry(
+                            LineString.fromLngLats(this.getGeoLine())
+                    )})));
 
-        this.map.addLayer(new LineLayer("linelayer", "line-source")
-                .withProperties(
-                        PropertyFactory.lineCap(Property.LINE_CAP_ROUND),
-                        PropertyFactory.lineJoin(Property.LINE_JOIN_MITER),
-                        PropertyFactory.lineOpacity(.7f),
-                        PropertyFactory.lineWidth(3f),
-                        PropertyFactory.lineColor(Color.parseColor("#ff0000"))));
+            this.map.addLayer(new LineLayer("linelayer", "line-source")
+                    .withProperties(
+                            PropertyFactory.lineCap(Property.LINE_CAP_ROUND),
+                            PropertyFactory.lineJoin(Property.LINE_JOIN_MITER),
+                            PropertyFactory.lineOpacity(.7f),
+                            PropertyFactory.lineWidth(3f),
+                            PropertyFactory.lineColor(Color.parseColor("#ff0000"))));
+        }
     }
 
     public void removeFromRoute(int position) {

@@ -42,6 +42,7 @@ public class CreateRouteDialog extends AppCompatDialogFragment {
 
                 if (ap != bp) {
                     MapManager.getInstance().setRoute(MarinePoints.getInstance().getRoute(ap, bp));
+                    MapManager.getInstance().setRouteActive(true);
                 }
             }
         });
